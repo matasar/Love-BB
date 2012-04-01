@@ -54,7 +54,7 @@ end
 
 function Board:mousepressed(x, y, button)
   local square = self:squareAt(x,y)
-  square:mousepressed(button)
+  square:mousepressed(x,y,button)
   if square.player and love.mouse.isDown("l") then
     self.player = square.player
     self.player.dragging = true

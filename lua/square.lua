@@ -13,9 +13,9 @@ function Square.create(x,y, board)
   return instance
 end
 
-function Square:mousepressed(button)
+function Square:mousepressed(x,y,button)
   if self.player then
-    self.player:mousepressed(button)
+    self.player:mousepressed(x,y,button)
   end
 end
 

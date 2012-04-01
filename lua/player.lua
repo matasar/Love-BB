@@ -11,7 +11,9 @@ function Player.create(square)
     alpha = 255,
     dragging = false,
     x = x,
-    y = y
+    y = y,
+    diffX = 0,
+    diffY = 0
   }
   if math.random(2) == 1 then
     instance.velocity = instance.velocity * -1
@@ -57,8 +59,6 @@ end
 
 function Player:draggedTo(x,y)
   self.dragging = true
-  self.diffX = x - self.x
-  self.diffY = y - self.y
 end
 
 function Player:dropped(board)
@@ -73,26 +73,26 @@ function Player:dropped(board)
     square.player = self
   end
   self.dragging = false
-  self.diffX = nil
-  self.diffY = nil
   self.x = square:getX()
   self.y = square:getY()
 end
 
 function Player:getPosition(square)
-  if self.x then
+  if self.dragging then
     return self.x, self.y
   else
     return square:getX(), square:getY()
   end
 end
 
-function Player:mousepressed(button)
+function Player:mousepressed(x,y,button)
   self.alpha = 122
+  self.diffX = x - self.x
+  self.diffY = y - self.y
 end
 
 function Player:update(dt)
-  if self.diffX then
+  if self.dragging then
     self.x = love.mouse.getX() - self.diffX
     self.y = love.mouse.getY() - self.diffY
   end
