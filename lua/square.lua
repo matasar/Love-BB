@@ -27,6 +27,10 @@ function Square:getY()
   return ((self.yIndex - 1) * self.size) + board.offset
 end
 
+function Square:getPosition()
+  return self:getX(), self:getY()
+end
+
 function Square:update(dt)
   if self.player then
     self.player:update(dt)

@@ -2,13 +2,16 @@ Player = {}
 Player.__index = Player
 
 function Player.create(square)
+  local x,y = square:getPosition()
   local instance = {
     image = love.graphics.newImage("media/epcatcher1b.gif"),
     zone = Zone.create(square),
     rotation = 0,
     velocity = math.random() * 0.2,
     alpha = 255,
-    dragging = false
+    dragging = false,
+    x = x,
+    y = y
   }
   if math.random(2) == 1 then
     instance.velocity = instance.velocity * -1
@@ -54,8 +57,8 @@ end
 
 function Player:draggedTo(x,y)
   self.dragging = true
-  self.x = x
-  self.y = y
+  self.diffX = x - self.x
+  self.diffY = y - self.y
 end
 
 function Player:dropped(board)
@@ -70,8 +73,10 @@ function Player:dropped(board)
     square.player = self
   end
   self.dragging = false
-  self.x = nil
-  self.y = nil
+  self.diffX = nil
+  self.diffY = nil
+  self.x = square:getX()
+  self.y = square:getY()
 end
 
 function Player:getPosition(square)
@@ -87,5 +92,9 @@ function Player:mousepressed(button)
 end
 
 function Player:update(dt)
+  if self.diffX then
+    self.x = love.mouse.getX() - self.diffX
+    self.y = love.mouse.getY() - self.diffY
+  end
   self.rotation = self.rotation + self.velocity -- SPIN THE MAN
 end
