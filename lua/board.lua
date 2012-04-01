@@ -10,8 +10,6 @@ function Board.create(imagePath)
   setmetatable(instance, Board)
   instance:setImage(imagePath)
   instance:buildSquares()
-  local square = instance.squares[9][8]
-  Player.create(square)
   return instance
 end
 
@@ -59,6 +57,9 @@ function Board:mousepressed(x, y, button)
   square:mousepressed(button)
   if square.player and love.mouse.isDown("l") then
     self.player = square.player
+    self.player.dragging = true
+  elseif not self.player and love.mouse.isDown("r") then
+    Player.create(square)
   end
 end
 
