@@ -5,7 +5,8 @@ function Board.create(imagePath)
   local instance = {
     width = 30,
     height = 15,
-    offset = 0
+    offset = 0,
+    squareSize = 30
   }
   setmetatable(instance, Board)
   instance:setImage(imagePath)
@@ -46,10 +47,6 @@ function Board:update(dt)
   self:each_square(function (ea)
     ea:update(dt)
   end)
-  if love.mouse.isDown("l") and self.player then
-    local x,y = love.mouse.getPosition()
-    self.player:draggedTo(x,y)
-  end
 end
 
 function Board:mousepressed(x, y, button)

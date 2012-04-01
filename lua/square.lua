@@ -3,7 +3,7 @@ Square.__index = Square
 
 function Square.create(x,y, board)
   local instance = {
-    size = 30,
+    size = board.squareSize,
     xIndex = x,
     yIndex = y,
     state = false,

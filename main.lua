@@ -15,6 +15,12 @@ function love.update(dt)
   board:update(dt)
 end
 
+function love.keypressed(k)
+  if k == "escape" then
+    love.event.push("q")
+  end
+end
+
 function love.mousepressed(x, y, button)
   board:mousepressed(x,y,button)
 end

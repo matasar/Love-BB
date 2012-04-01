@@ -57,13 +57,10 @@ function Player:shouldDrawZone()
   return shift and not self.dragging
 end
 
-function Player:draggedTo(x,y)
-  self.dragging = true
-end
-
 function Player:dropped(board)
   self.alpha = 255
-  local square = board:squareAt(self.x,self.y)
+  local offset = board.squareSize / 2
+  local square = board:squareAt(self.x + offset,self.y + offset)
   board:each_square(function (ea)
     if ea.player == self then
       ea.player = nil
