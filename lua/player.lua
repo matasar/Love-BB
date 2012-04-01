@@ -87,5 +87,5 @@ function Player:mousepressed(button)
 end
 
 function Player:update(dt)
-  --  self.rotation = self.rotation + self.velocity -- SPIN THE MAN
+  self.rotation = self.rotation + self.velocity -- SPIN THE MAN
 end
