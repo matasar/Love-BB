@@ -5,11 +5,13 @@ function Board.create(imagePath)
   local instance = {
     width = 30,
     height = 15,
-    offset = 1
+    offset = 0
   }
   setmetatable(instance, Board)
   instance:setImage(imagePath)
   instance:buildSquares()
+  local square = instance.squares[9][8]
+  Player.create(square)
   return instance
 end
 
@@ -22,28 +24,53 @@ function Board:buildSquares()
   for i = 1,30 do
     self.squares[i] = {}
     for j = 1,15 do
-      self.squares[i][j] = Square.create(i,j)
+      self.squares[i][j] = Square.create(i,j, self)
+    end
+  end
+end
+
+function Board:each_square(fn)
+  for x,row in ipairs(self.squares) do
+    for y,square in ipairs(row) do
+      fn(square,x,y)
     end
   end
 end
 
 function Board:draw()
   love.graphics.draw(self.image)
-  for x,row in ipairs(self.squares) do
-    for y,square in ipairs(row) do
-      square:draw()
-    end
+  self:each_square(function(ea)
+    ea:draw()
+  end)
+end
+
+function Board:update(dt)
+  self:each_square(function (ea)
+    ea:update(dt)
+  end)
+  if love.mouse.isDown("l") and self.player then
+    local x,y = love.mouse.getPosition()
+    self.player:draggedTo(x,y)
   end
 end
 
 function Board:mousepressed(x, y, button)
-  xIndex, yIndex = self:squareAt(x,y)
-  print(xIndex .. ',' .. yIndex)
-  self.squares[xIndex][yIndex]:mousepressed(button)
+  local square = self:squareAt(x,y)
+  square:mousepressed(button)
+  if square.player and love.mouse.isDown("l") then
+    self.player = square.player
+  end
+end
+
+function Board:mousereleased(x,y,button)
+  if self.player then
+    self.player:dropped(self)
+    self.player = nil
+  end
 end
 
 function Board:squareAt(x,y)
   xIndex = math.floor(math.abs(x - self.offset) / 30) + 1
   yIndex = math.floor(math.abs(y - self.offset) / 30) + 1
-  return xIndex, yIndex
+  return self.squares[xIndex][yIndex]
 end
