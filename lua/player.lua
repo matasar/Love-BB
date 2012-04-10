@@ -6,8 +6,8 @@ function Player.create(square)
   local instance = {
     image = love.graphics.newImage("media/epcatcher1b.gif"),
     zone = Zone.create(square),
-    rotation = 0,
-    velocity = math.random() * 0.2,
+    angle = 0,
+    rotational_velocity = math.random() * 0.2,
     alpha = 255,
     dragging = false,
     x = x,
@@ -16,7 +16,7 @@ function Player.create(square)
     diffY = 0
   }
   if math.random(2) == 1 then
-    instance.velocity = instance.velocity * -1
+    instance.rotational_velocity = instance.rotational_velocity * -1
   end
   setmetatable(instance, Player)
   square.player = instance
@@ -32,7 +32,7 @@ function Player:draw(square)
     self.image,
     x + offset,
     y + offset,
-    self.rotation,
+    self.angle,
     1,
     1,
     offset,
@@ -93,5 +93,5 @@ function Player:update(dt)
     self.x = love.mouse.getX() - self.diffX
     self.y = love.mouse.getY() - self.diffY
   end
-  self.rotation = self.rotation + self.velocity -- SPIN THE MAN
+  self.angle = self.angle + self.rotational_velocity -- SPIN THE MAN
 end
