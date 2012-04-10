@@ -1,7 +1,7 @@
-require('lua/zone.lua')
-require('lua/player.lua')
-require('lua/square.lua')
-require("lua/board.lua")
+require('lua/zone')
+require('lua/player')
+require('lua/square')
+require("lua/board")
 
 function love.load()
   board = Board.create("media/field_good.jpg")
